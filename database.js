@@ -10,7 +10,6 @@ Object.assign(module.exports, {
 });
 
 function connect(cb) {
-    // Set _db as global variable
     if (global._db) { cb(); }
 
     client = new MongoClient(dbConfig.uri, {

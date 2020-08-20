@@ -1,38 +1,11 @@
-// NODE MODULES
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+const appLauncher = require("./launcher");
 
-// CONFIGURATION FILES
-require("./globals");
-const { port } = require("./config");
-const database = require("./database");
+appLauncher.loadEnvironmentVariables();
+appLauncher.loadGlobalVariables();
 
-// ROUTES
-const { router: rootRouter } = require("./modules/root/router");
-const { router: blogRouter } = require("./modules/blog");
+const app = appLauncher.createApp();
+appLauncher.useCors(app);
+appLauncher.useBodyParser(app);
 
-// DEFINE APP
-const app = express();
-app.use(cors());
-app.use("/", rootRouter);
-app.use("/blog", blogRouter);
-
-// START DATABASE AND APPLICATION
-database.connect((err) => {
-    if (err) {
-        console.log("Unable to connect to database.");
-        process.exit(1);
-    }
-
-    app.listen(port, () => {
-        console.log(`Listening on port ${port}...`);
-    });
-
-    process.on("SIGINT", () => {
-        database.close(() => {
-            console.log("Disconnected from database.");
-            process.exit(0);
-        });
-    });
-});
+appLauncher.setRouter(app);
+appLauncher.connectDatabase(() => appLauncher.start(app));

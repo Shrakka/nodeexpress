@@ -1,7 +1,6 @@
-// PORT
 const port = process.env.PORT || 5000;
 
-// MONGO URI
+// MONGO
 const mongoUser = process.env.MONGO_USER;
 const mongoPassword = process.env.MONGO_PASSWORD;
 const mongoProjectName = process.env.MONGO_PROJECT_NAME;
