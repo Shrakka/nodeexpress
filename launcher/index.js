@@ -1,4 +1,4 @@
-const { connectDatabase } = require("./connectDatabase");
+const { initDatabase } = require("./initDatabase");
 const { createApp } = require("./createApp");
 const { loadEnvironmentVariables } = require("./loadEnvironmentVariables");
 const { loadGlobalVariables } = require("./loadGlobalVariables");
@@ -11,7 +11,7 @@ module.exports = buildAppLauncher();
 
 function buildAppLauncher() {
     return {
-        connectDatabase,
+        initDatabase,
         createApp,
         loadEnvironmentVariables,
         loadGlobalVariables,

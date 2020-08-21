@@ -20,7 +20,8 @@ function connect(cb) {
     client.connect((err) => {
         if (err) { cb(err); }
 
-        global._db = client.db(dbConfig.name);
+        const _db = client.db(dbConfig.name);
+        global._db = _db;
         cb();
     });
 }

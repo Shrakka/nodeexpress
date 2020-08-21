@@ -8,4 +8,4 @@ appLauncher.useCors(app);
 appLauncher.useBodyParser(app);
 
 appLauncher.setRouter(app);
-appLauncher.connectDatabase(() => appLauncher.start(app));
+appLauncher.initDatabase(() => appLauncher.start(app));
