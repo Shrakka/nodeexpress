@@ -13,7 +13,8 @@ module.exports = {
     globals: {
         _: true,
         _db: true,
-        md: true
+        md: true,
+        ObjectId: true
     },
     rules: {
         "comma-dangle": ["error", "never"],

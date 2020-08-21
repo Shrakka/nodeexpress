@@ -3,5 +3,6 @@ Object.assign(module.exports, {
 });
 
 async function createPost(req) {
-    return _db.collection("posts").insertOne(req.body);
+    const { insertedId } = await _db.collection("posts").insertOne(req.body);
+    return _db.collection("posts").findOne({ _id: insertedId });
 }
