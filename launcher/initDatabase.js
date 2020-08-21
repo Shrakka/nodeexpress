@@ -2,10 +2,10 @@ Object.assign(module.exports, {
     initDatabase
 });
 
-function initDatabase(cb) {
+function initDatabase(cb, { closeAfterCallback = false } = {}) {
     const database = require("../database");
 
-    database.connect((err) => {
+    database.connect(async (err) => {
         if (err) {
             console.log("Unable to connect to database.");
             process.exit(1);
@@ -18,6 +18,12 @@ function initDatabase(cb) {
             });
         });
 
-        cb();
+        await cb();
+
+        if (closeAfterCallback) {
+            database.close(() => {
+                process.exit(0);
+            });
+        }
     });
 }

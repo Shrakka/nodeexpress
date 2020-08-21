@@ -15,8 +15,10 @@ function send(controllerOrResource) {
             try {
                 resource = await controllerOrResource(req, res);
             } catch (error) {
-                console.error(error);
-                res.status(500).send(error);
+                res.status(500).send({
+                    error,
+                    stack: error.stack
+                });
             } finally {
                 res.send(resource);
             }

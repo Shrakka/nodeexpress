@@ -1,40 +1,14 @@
-require("dotenv").config();
-const database = require("../database");
+const init = require("./init");
+const { schemas } = require("./schemas");
 
-database.connect(async (err) => {
-    if (err) {
-        console.log("Unable to connect to database.");
-        process.exit(1);
-    }
+init(setValidators);
 
-    await _db.command({
-        collMod: "posts",
-        validator: {
-            $jsonSchema: {
-                bsonType: "object",
-                required: ["content", "createdAt"],
-                additionalProperties: false,
-                properties: {
-                    _id: {
-                        bsonType: "objectId"
-                    },
-                    content: {
-                        bsonType: "string",
-                        description: "content must be provided"
-                    },
-                    createdAt: {
-                        bsonType: "string",
-                        description: "createdAt must be provided"
-                    }
-                }
-            }
-        },
+async function setValidators() {
+    const commands = _.map(schemas, (schema, collectionName) => ({
+        collMod: collectionName,
+        validator: { $jsonSchema: schema },
         validationLevel: "strict",
         validationAction: "error"
-    });
-
-    database.close(() => {
-        console.log("Disconnected from database.");
-        process.exit(0);
-    });
-});
+    }));
+    await Promise.all(commands.map((command) => _db.command(command)));
+}
